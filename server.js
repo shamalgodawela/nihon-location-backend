@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const ExecutiveRouter = require('./routes/ExecutiveRouter');
 const LocationRoute = require('./routes/LocationRoute');
+const adminRouter = require('./routes/adminRouter');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(cors({
 // Routes
 app.use("/api", ExecutiveRouter);
 app.use("/api", LocationRoute);
+app.use("/api", adminRouter)
 
 // Home route
 app.get("/", (req, res) => {
