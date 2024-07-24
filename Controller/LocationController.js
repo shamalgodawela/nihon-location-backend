@@ -2,30 +2,25 @@ const Location = require('../Models/LocationForm');
 const Executive = require('../Models/Executive');
 
 const addLocation = async (req, res) => {
-    try {
-        const { exeId, shopName, latitude, longitude } = req.body;
+  try {
+      const { exeId, shopName, latitude, longitude } = req.body;
 
-        // Check if the executive exists
-        const existingUser = await Executive.findOne({ exeId });
-        if (!existingUser) {
-            return res.status(404).json({ error: 'Executive not found' });
-        }
+      
+      const newLocation = new Location({
+          exeId,
+          shopName,
+          latitude,
+          longitude
+      });
+      await newLocation.save();
 
-        // Save the location document to the database
-        const newLocation = new Location({
-            exeId,
-            shopName,
-            latitude,
-            longitude
-        });
-        await newLocation.save();
-
-        res.status(201).json({ message: 'Location added successfully' });
-    } catch (error) {
-        console.error('Error adding location:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
+      res.status(201).json({ message: 'Location added successfully' });
+  } catch (error) {
+      console.error('Error adding location:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
 };
+
 
 const getAllLocations = async (req, res) => {
     try {
