@@ -3,23 +3,33 @@ const Executive = require('../Models/Executive');
 
 const addLocation = async (req, res) => {
   try {
-      const { exeId, shopName, latitude, longitude } = req.body;
+    const { exeId, shopName, latitude, longitude } = req.body;
 
-      
-      const newLocation = new Location({
-          exeId,
-          shopName,
-          latitude,
-          longitude
-      });
-      await newLocation.save();
+    // Basic validation for required fields
+    if (!exeId || !shopName || latitude === undefined || longitude === undefined) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
 
-      res.status(201).json({ message: 'Location added successfully' });
+    // Latitude must be between -90 and 90, Longitude must be between -180 and 180
+    if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
+      return res.status(400).json({ error: 'Invalid latitude or longitude values' });
+    }
+
+    const newLocation = new Location({
+      exeId,
+      shopName,
+      latitude,
+      longitude
+    });
+
+    await newLocation.save();
+    res.status(201).json({ message: 'Location added successfully' });
   } catch (error) {
-      console.error('Error adding location:', error);
-      res.status(500).json({ error: 'Internal server error' });
+    console.error('Error adding location:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 
 const getAllLocations = async (req, res) => {
