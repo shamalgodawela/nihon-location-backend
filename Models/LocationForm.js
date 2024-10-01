@@ -1,5 +1,3 @@
-// models/Location.js
-
 const mongoose = require('mongoose');
 
 const locationSchema = new mongoose.Schema({
@@ -21,7 +19,11 @@ const locationSchema = new mongoose.Schema({
   },
   timestamp: {
     type: Date,
-    default: Date.now
+    default: Date.now  // This will capture both date and time
+  },
+  time: {
+    type: String,  // Storing just the time as a string
+    required: true
   }
 });
 

@@ -5,30 +5,29 @@ const addLocation = async (req, res) => {
   try {
     const { exeId, shopName, latitude, longitude } = req.body;
 
-    // Basic validation for required fields
-    if (!exeId || !shopName || latitude === undefined || longitude === undefined) {
-      return res.status(400).json({ error: 'All fields are required' });
-    }
-
-    // Latitude must be between -90 and 90, Longitude must be between -180 and 180
-    if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
-      return res.status(400).json({ error: 'Invalid latitude or longitude values' });
-    }
+    // Create a new Date object to capture current date and time
+    const currentTime = new Date();
+    
+    // Extract just the time (hours, minutes, seconds)
+    const formattedTime = currentTime.toLocaleTimeString();  // Example format: "2:15:30 PM"
 
     const newLocation = new Location({
       exeId,
       shopName,
       latitude,
-      longitude
+      longitude,
+      timestamp: currentTime,  // This will store full date and time
+      time: formattedTime       // Store the extracted time as a string
     });
 
     await newLocation.save();
-    res.status(201).json({ message: 'Location added successfully' });
+    res.status(201).json({ message: 'Location added successfully', location: newLocation });
   } catch (error) {
     console.error('Error adding location:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 
 
