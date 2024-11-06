@@ -9,9 +9,8 @@ const adminRouter = require('./routes/adminRouter');
 const app = express();
 
 // Middleware
-
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 
 app.use(cors({
   origin: ["http://localhost:3000", "https://nihon-location.vercel.app"],
@@ -21,11 +20,16 @@ app.use(cors({
 // Routes
 app.use("/api", ExecutiveRouter);
 app.use("/api", LocationRoute);
-app.use("/api", adminRouter)
+app.use("/api", adminRouter);
 
 // Home route
 app.get("/", (req, res) => {
   res.send("Home page");
+});
+
+// Ping route
+app.get("/ping", (req, res) => {
+  res.send("OK");
 });
 
 const PORT = process.env.PORT || 5000;
